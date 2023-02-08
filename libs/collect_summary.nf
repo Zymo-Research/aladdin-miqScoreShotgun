@@ -19,9 +19,6 @@ def collect_summary(params, workflow) {
         summary['AWS Region']            = params.awsregion
         summary['AWS Queue']             = params.awsqueue
     }
-    summary['Forward Primer Length']     = params.forward_primer_length
-    summary['Reverse Primer Length']     = params.reverse_primer_length
-    summary['Amplicon Length']           = params.amplicon_length
     
     return summary
 }

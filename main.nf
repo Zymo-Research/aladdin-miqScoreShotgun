@@ -32,7 +32,7 @@ design = setup_channel(params.design, "design CSV file", true, "")
 /*
  * COLLECT SUMMARY & LOG
  */
-log.info "Aladdin miqScore v${workflow.manifest.version}"
+log.info "Aladdin miqScore Shotgun v${workflow.manifest.version}"
 def summary = collect_summary(params, workflow)
 log.info summary.collect { k,v -> "${k.padRight(21)}: $v" }.join("\n")
 // Save workflow summary plain text
@@ -44,11 +44,8 @@ Channel.from( summary.collect{ [it.key, it.value] } )
  * PROCESS DEFINITION
  */
 include { check_design } from "./processes/check_design"
-include { miqscore16s } from "./processes/miqscore16s" addParams(
-    publish_dir: "${outdir}/miqscore16s",
-    forward_primer_length: params.forward_primer_length,
-    reverse_primer_length: params.reverse_primer_length,
-    amplicon_length: params.amplicon_length
+include { miqscoreShotgun } from "./processes/miqscoreShotgun" addParams(
+    publish_dir: "${outdir}/miqscoreShotgun",
 )
 include { summarize_downloads } from "./processes/summarize_downloads" addParams(
     publish_dir: "${outdir}/download_data"
@@ -68,8 +65,8 @@ workflow {
             sample_name: it['sample']
         }
         .set { input }
-    miqscore16s(input.sample_name, input.read_1, input.read_2)
-    miqscore16s.out.report.map { "${outdir}/miqscore16s/" + it.getName() }
+    miqscoreShotgun(input.sample_name, input.read_1, input.read_2)
+    miqscoreShotgun.out.report.map { "${outdir}/miqscoreShotgun/" + it.getName() }
         .collectFile(name: "${outdir}/download_data/file_locations.txt", newLine: true)
         .set { output_locations }
     summarize_downloads(output_locations)
@@ -85,8 +82,8 @@ workflow.onComplete {
       log.info "Number of successfully ran process(es) : ${workflow.stats.succeedCount}"
     }
     if(workflow.success){
-        log.info "[miqScore] Pipeline completed successfully"
+        log.info "[miqScoreShotgun] Pipeline completed successfully"
     } else {
-        log.info "[miqScore] Pipeline completed with errors"
+        log.info "[miqScoreShotgun] Pipeline completed with errors"
     }
 }
