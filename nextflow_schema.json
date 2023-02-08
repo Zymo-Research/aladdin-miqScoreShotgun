@@ -1,7 +1,7 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema",
-    "$id": "https://raw.githubusercontent.com/Zymo-Research/aladdin-miqScore/main/nextflow_schema.json",
-    "title": "Zymo-Research/aladdin-miqScore pipeline parameters",
+    "$id": "https://raw.githubusercontent.com/Zymo-Research/aladdin-miqScoreShotgun/main/nextflow_schema.json",
+    "title": "Zymo-Research/aladdin-miqScoreShotgun pipeline parameters",
     "description": "Nextflow pipeline for calculating MIQ scores, part of the Aladdin Bioinformatics Platform pipeline catalog",
     "single_sample": true,
     "group_comparison": false,
@@ -25,35 +25,6 @@
                 }
             },
             "required": ["design"]
-        },
-        "amplicon_options": {
-            "title": "Amplicon and primer options",
-            "type": "object",
-            "description": "Options about primer and amplicon lengths",
-            "properties": {
-                "forward_primer_length": {
-                    "type": "integer",
-                    "description": "Length of the forward primer",
-                    "minimum": 1,
-                    "maximum": 50,
-                    "default": 16
-                },
-                "reverse_primer_length": {
-                    "type": "integer",
-                    "description": "Length of the reverse primer",
-                    "minimum": 1,
-                    "maximum": 50,
-                    "default": 24
-                },
-                "amplicon_length": {
-                    "type": "integer",
-                    "description": "Length of the amplicon",
-                    "minimum": 1,
-                    "maximum": 5000,
-                    "default": 510
-                }
-            },
-            "required": ["forward_primer_length", "reverse_primer_length", "amplicon_length"]
         },
         "max_job_request_options": {
             "title": "Max job request options",
@@ -120,9 +91,6 @@
     "allOf": [
         {
             "$ref": "#/definitions/input_output_options"
-        },
-        {
-            "$ref": "#/definitions/amplicon_options"
         },
         {
             "$ref": "#/definitions/max_job_request_options"
