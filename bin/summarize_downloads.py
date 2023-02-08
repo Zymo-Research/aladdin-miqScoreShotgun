@@ -45,7 +45,7 @@ def summarize_downloads(locations):
                     file_info[fn] = info
                     break
             else:
-                logger.error("File {} did not match any expected patterns".format(fn))
+                logger.info("File {} did not match any expected patterns".format(fn))
     
     # Output the dict to JSON
     with open('files_to_download.json', 'w') as fh:
