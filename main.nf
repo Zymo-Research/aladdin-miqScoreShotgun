@@ -10,6 +10,7 @@ nextflow.enable.dsl=2
 // Load functions
 include { setup_channel } from ('./libs/setup_channel')
 include { collect_summary } from ('./libs/collect_summary')
+include { parse_design } from ('./libs/parse_design')
 
 // AWSBatch sanity checking
 if ( workflow.profile == 'awsbatch') {
@@ -60,12 +61,10 @@ workflow {
         .splitCsv( header: true )
         .first() // Only support 1 pair of FASTQ for now
         .multiMap {
-            read_1     : file(it['read_1'])
-            read_2     : file(it['read_2'])
-            sample_name: it['sample']
+            design: parse_design(it)
         }
         .set { input }
-    miqscoreShotgun(input.sample_name, input.read_1, input.read_2)
+    miqscoreShotgun(input.design)
     miqscoreShotgun.out.report.map { "${outdir}/miqscoreShotgun/" + it.getName() }
         .collectFile(name: "${outdir}/download_data/file_locations.txt", newLine: true)
         .set { output_locations }
