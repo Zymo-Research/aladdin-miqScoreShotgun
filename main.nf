@@ -60,11 +60,11 @@ workflow {
     check_design.out.checked_design
         .splitCsv( header: true )
         .first() // Only support 1 pair of FASTQ for now
-        .multiMap {
-            design: parse_design(it)
+        .map {
+            parse_design(it)
         }
         .set { input }
-    miqscoreShotgun(input.design)
+    miqscoreShotgun(input)
     miqscoreShotgun.out.report.map { "${outdir}/miqscoreShotgun/" + it.getName() }
         .collectFile(name: "${outdir}/download_data/file_locations.txt", newLine: true)
         .set { output_locations }
