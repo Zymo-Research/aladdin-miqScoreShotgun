@@ -29,8 +29,8 @@ def check_design(DesignFileIn, DesignFileOut):
             # Check the fastq file locations
             assert cols[2], "R1 path could not be missing!"
             assert re.match(fastq_pattern, cols[2]), "R1 path must point to a FASTQ file or gziped FASTQ file!"
-            assert cols[3], "R2 path could not be missing!"
-            assert re.match(fastq_pattern, cols[3]), "R2 path must point to a FASTQ file or gziped FASTQ file!"
+            if cols[3]:
+                assert re.match(fastq_pattern, cols[3]), "R2 path must point to a FASTQ file or gziped FASTQ file!"
             # Check the group label
             if cols[0]:
                 assert re.match(label_pattern, cols[0]), "Group label {} contains illegal characters or does not start with letters!".format(cols[0])
