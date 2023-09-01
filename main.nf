@@ -45,6 +45,9 @@ Channel.from( summary.collect{ [it.key, it.value] } )
  * PROCESS DEFINITION
  */
 include { check_design } from "./processes/check_design"
+include { downsample } from "./processes/downsample" addParams(
+    downsample_num: params.downsample_num
+)
 include { miqscoreShotgun } from "./processes/miqscoreShotgun" addParams(
     publish_dir: "${outdir}/miqscoreShotgun",
 )
@@ -64,7 +67,9 @@ workflow {
             parse_design(it)
         }
         .set { input }
-    miqscoreShotgun(input)
+    downsample(input)
+    miqscore_input = params.downsample_num ? downsample.out.reads : input
+    miqscoreShotgun(miqscore_input)
     miqscoreShotgun.out.report.map { "${outdir}/miqscoreShotgun/" + it.getName() }
         .collectFile(name: "${outdir}/download_data/file_locations.txt", newLine: true)
         .set { output_locations }
