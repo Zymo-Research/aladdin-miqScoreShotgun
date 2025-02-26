@@ -23,6 +23,7 @@ process miqscoreShotgun {
         mkdir working
         export WORKINGFOLDER=\$PWD/working
         export SEQUENCEFOLDER=\$PWD
+        export LOGFILE=\$PWD/miqcoreshotgun.log
         python3 /opt/miqScoreShotgun/analyzeStandardReads.py
         mv output/*.html ./
         """
@@ -38,6 +39,7 @@ process miqscoreShotgun {
         mkdir working
         export WORKINGFOLDER=\$PWD/working
         export SEQUENCEFOLDER=\$PWD
+        export LOGFILE=\$PWD/miqcoreshotgun.log
         python3 /opt/miqScoreShotgun/analyzeStandardReads.py
         mv output/*.html ./
         """
